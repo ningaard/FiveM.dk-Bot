@@ -1,0 +1,10 @@
+{
+  "token" : "find token på discord dev side",
+  "prefix" : "!",
+
+  "host": "localhost",
+  "user": "root",
+  "password": "",
+  "database": "vrp"
+
+}
