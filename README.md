@@ -1,2 +1,2 @@
-# FiveM bot
- Open Source FiveM Bot
+# Twitch & Discord bot
+ Open Source
