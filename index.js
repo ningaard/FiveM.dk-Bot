@@ -29,7 +29,7 @@ console.table(client.commands)
 
 client.on("ready", () => {
 
-  console.log(`FiveM Botten er startet.`);
+  console.log(`Botten er startet.`);
 
 
 });
