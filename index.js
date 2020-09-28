@@ -2,6 +2,7 @@ const Discord = require('discord.js')
 const fetch = require("node-fetch");
 var fs = require('fs');
 var con = require('./database');
+const twitch = require('./twitch.js')
 
 
 
