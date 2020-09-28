@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const fetch = require("node-fetch");
 var fs = require('fs');
+var con = require('./database');
 
 
 
@@ -50,7 +51,20 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
+	var server = message.guild.id
+	console.log(server)
 
+	con.connect(function(err) {
+	    con.query("SELECT * FROM commands WHERE active = 1 and guild ='"+server+"'", function (err, result, fields) {
+	      console.log(result);
+	      for (var i = 0; i < result.length; i++) {
+	        if (message.content == "!" + result[i]['command']) {
+						console.log("test")
+	          message.channel.send(result[i]['answer'])
+	        }
+	      }
+	    });
+	  });
 
   if (!client.commands.has(command)) return;
 
