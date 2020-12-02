@@ -37,7 +37,7 @@ module.exports = {
 								var sql = "INSERT INTO votes (identifier, server, curdate) VALUES ('"+identifier+"', '"+server+"', CURDATE())";
 							  con.query(sql, function (err, result) {
 							    if (err) throw err;
-									message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['server_name']+"), mange tak. - Husk at stem igen i morgen!");
+									message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['server_name']+"), mange tak. - Husk at stem igen i morgen!\nHusk du kan stemme 2 gange hvis du også stemmer inde på https://fivem.dk");
 									// message.channel.send(message.author.id)
 
 										var sql = "UPDATE servers SET points=points+1 WHERE ip='"+server+"'";
