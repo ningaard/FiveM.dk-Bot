@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const fetch = require("node-fetch");
 var fs = require('fs');
 var con = require('./database');
-const twitch = require('./twitch.js')
+var api = require('./api');
 
 
 
@@ -29,7 +29,17 @@ console.table(client.commands)
 
 client.on("ready", () => {
 
-  console.log(`Botten er startet.`);
+	client.user.setActivity("🎄🎅Glædelig jul🎅🎄", {
+    type: 'WATCHING',
+    url: 'https://www.twitch.tv/fivemdk'
+});
+
+  console.log('Botten er startet.' + " Botten er på " + client.guilds.cache.size + " forskellige servere:");
+	const guildNames = client.guilds.cache.map(g => g.name).join("\n")
+
+		console.log(guildNames)
+
+
 
 
 });
@@ -56,16 +66,22 @@ client.on("message", async message => {
 	console.log(server)
 
 	con.connect(function(err) {
-	    con.query("SELECT * FROM commands WHERE active = 1 and guild ='"+server+"'", function (err, result, fields) {
-	      console.log(result);
-	      for (var i = 0; i < result.length; i++) {
-	        if (message.content == "!" + result[i]['command']) {
-						console.log("test")
-	          message.channel.send(result[i]['answer'])
-	        }
-	      }
-	    });
-	  });
+		    con.query("SELECT * FROM commands", function (err, result, fields) {
+		      // console.log(result);
+		      for (var i = 0; i < result.length; i++) {
+		        if (message.content.toLowerCase() == "!" + result[i]['command'].toLowerCase()) {
+							// console.log("test")
+
+							const embed = new Discord.MessageEmbed();
+							embed.setTitle(result[i]['shortcut'])
+							embed.setAuthor("FiveM.dk")
+							embed.addField("Svar", result[i]['answer'], true)
+							embed.setFooter('FiveM.dk - Bragt til live af Lasse Mejdahl Christensen');
+							message.channel.send({embed});
+		        }
+		      }
+		    });
+		  });
 
   if (!client.commands.has(command)) return;
 
