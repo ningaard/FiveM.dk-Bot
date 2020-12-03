@@ -25,7 +25,7 @@ module.exports = {
 					var s = i + 1
 					embed.addField(s+". " + result[i]['name'], "Points: " + result[i]['points'], false)
 				}
-				embed.setFooter('FiveM.dk - Bragt til live af Lasse Mejdahl Christensen');
+				embed.setFooter(config.footer);
 
 				message.channel.send({embed});
 

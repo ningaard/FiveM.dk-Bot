@@ -29,7 +29,7 @@ console.table(client.commands)
 
 client.on("ready", () => {
 
-	client.user.setActivity("🎄🎅Glædelig jul🎅🎄", {
+	client.user.setActivity("FiveM.dk/discord", {
     type: 'WATCHING',
     url: 'https://www.twitch.tv/fivemdk'
 });

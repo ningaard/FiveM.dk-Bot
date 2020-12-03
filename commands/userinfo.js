@@ -33,7 +33,7 @@ module.exports = {
 				embed.addField("Joinede " + guild, joinedGangGang, false)
 
 				embed.addField("Roller", uiRoles, false)
-				embed.setFooter('FiveM Bot - https://github.com/Lassemc475/FiveM-bot');
+				embed.setFooter(config.footer);
 
 				message.channel.send({embed});
 

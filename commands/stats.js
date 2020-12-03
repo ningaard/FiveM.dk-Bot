@@ -37,7 +37,7 @@ module.exports = {
 				embed.addField("Votes i dag", response['data']['votes_today'], true)
 				embed.addField("Forskellige voters", response['data']['voters'], true)
 				embed.addField("Samlet spillertal", response['data']['clients'], true)
-				embed.setFooter('FiveM.dk - Bragt til live af Lasse Mejdahl Christensen');
+				embed.setFooter(config.footer);
 
 				message.channel.send({embed});
 			 })

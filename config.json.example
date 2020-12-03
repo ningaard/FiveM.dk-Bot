@@ -1,6 +1,7 @@
 {
   "token" : "find token på discord dev side",
   "prefix" : "!",
+  "footer" : "Bragt til live af Lasse Mejdahl Christensen",
 
   "host": "localhost",
   "user": "root",
