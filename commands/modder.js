@@ -24,35 +24,60 @@ module.exports = {
 				// handle success
 				for (var i = 0; i < response['data']['Data']['players'].length; i++) {
 					identifier = response['data']['Data']['players'][i]['identifiers'][0]
+					allIdentifiers = response['data']['Data']['players'][i]['identifiers']
+					name = response['data']['Data']['players'][i]['name']
 					steam = identifier.replace("steam:","")
-					console.log(steam)
+					length = response['data']['Data']['players'].length
 
-					axios.get("http://64.225.105.125:8081/verify="+identifier)
-						.then(function (response) {
-							if (response['data'] == false) {
-								message.channel.send("Der er en registreret modder på denne server")
-								modder = true
-							}
-						})
+					check = checkBanned(identifier,name,i,length,message,allIdentifiers,server)
 
-				}
-				if (modder == false) {
-					message.channel.send("Fandt ingen registerede moddere på denne server")
 				}
 
 
 			 })
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-			 })
-			.then(function () {
-				// always executed
-			});
-
 
 
 
 }
 
 };
+
+
+async function checkBanned(identifier,name,i,length,message,allIdentifiers,server) {
+	// console.log(identifier)
+	// console.log(name)
+	axios.get("http://64.225.105.125:8081/verify="+identifier)
+		.then(function await (response) {
+			// console.log(name)
+			if (response['data'] == false) {
+				con.query("SELECT * FROM servers WHERE ip = '"+server+"'", function (err, result, fields) {
+					// console.log(result);
+					if (typeof result[0] !== "undefined") {
+						modder = true
+						var ids = JSON.stringify(allIdentifiers, null, 2);
+						const embed = new Discord.MessageEmbed();
+							embed.setTitle("Modder fundet")
+							embed.setAuthor("FiveM.dk")
+							embed.setThumbnail(result[0]['logo'])
+
+							embed.setColor(0x00AE86)
+							embed.setDescription("```json\n" + ids + "```", false)
+							embed.addField("Server ", result[0]['name'], false)
+
+							embed.setFooter(config.footer);
+
+							message.channel.send({embed});
+						isBanned = "Banned!"
+						return isBanned;
+					}
+				})
+			}
+
+			if (i === length - 1) {
+				if (!modder) {
+					message.channel.send("Serveren blev tjekket igennem.")
+				}
+			}
+		})
+
+}
