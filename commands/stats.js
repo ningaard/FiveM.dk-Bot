@@ -12,31 +12,31 @@ module.exports = {
 	async execute(message, args) {
 
 		const server = args.join(" ");
-		var url = "https://fivem.dk/functions/api.php?server="+server
+		var url = "http://localhost/api/"+server
 		axios.get(url)
 			.then(function (response) {
 				// handle success
 				// console.log(response);
 				const embed = new Discord.MessageEmbed();
 
-				if (typeof response['data']['server_name'] === "undefined") {
+				if (typeof response['data']['result6'][0]['name'] === "undefined") {
 					message.channel.send("Denne server findes ikke på vores liste. Tjek listen på https://fivem.dk")
 					return;
 				}
 
-				if (!response['data']['server_name'] == "FiveM.dk") {
+				if (!response['data']['result6'][0]['name'] == "FiveM.dk") {
 				} else {
 					embed.setTitle("FiveM.dk - Overall stats")
 				}
-				embed.setTitle(response['data']['server_name'] + " - stats")
+				embed.setTitle(response['data']['result6'][0]['name'] + " - stats")
 				embed.setAuthor("FiveM.dk")
 
 
 				embed.setColor(0x00AE86)
-				embed.addField("Votes i alt", response['data']['votes_all'], true)
-				embed.addField("Votes i dag", response['data']['votes_today'], true)
-				embed.addField("Forskellige voters", response['data']['voters'], true)
-				embed.addField("Samlet spillertal", response['data']['clients'], true)
+				embed.addField("Votes i alt", response['data']['result'][0]['total'], true)
+				embed.addField("Votes i dag", response['data']['result2'][0]['today'], true)
+				embed.addField("Forskellige voters", response['data']['result3'][0]['ips'], true)
+				embed.addField("Samlet spillertal", response['data']['result4'][0]['clients'], true)
 				embed.setFooter(config.footer);
 
 				message.channel.send({embed});

@@ -1,0 +1,286 @@
+<%- include ("../partials/header") %>
+
+
+<meta name="google-site-verification" content="bEPLx5umDPUfC2fswoYZnYFZ_3uQIYaHNkMdozNrWVQ" />
+
+<style media="screen">
+  tr:nth-child(even){background-color: #f2f2f2;}
+</style>
+
+
+
+</section>
+<div class="partnere">
+<center>
+    <section id="discordwidget">
+        <div class="some">
+            <div id="discordlogo">
+            <img href="https://discord.gg/VHDPNxezQc" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787022117165072424/Olympia_Network-01.png">
+            </div>
+            <div id="discordconnect">
+                <p>Olympia Network<a href="https://discord.gg/VHDPNxezQc" target="_blank" button type="discord" class="dbutton">Tilslut Olympia Network</button></a>     <div id="members-count"></div>
+            </div>
+        </div>
+        </section>
+        <!-- <section id="discordwidget">
+        <div style="margin-left: 10px;" class="some">
+            <div id="discordlogo">
+          <img href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/777244889503105085/banner.png">
+            </div>
+            <div id="discordconnect">
+                <p>FirstChoice<a href="https://discord.gg/r3BEbHg" target="_blank" button type="discord" class="dbutton">Tilslut FirstChoice</button></a>     <div id="members-count"></div>
+            </div>
+        </div>
+    </section> -->
+    <section id="discordwidget">
+    <div style="margin-left: 10px;" class="some">
+        <div id="discordlogo">
+          <a href="https://discord.gg/wy8m7GCz6C"><img style="border-radius:5%;" href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787014525043605554/Udklipccc.png"></a>
+        <!-- <img href="#" target="_blank" src="https://forum.cfx.re/uploads/default/original/4X/f/7/b/f7bd789d9d3ad55ff91dc57979e485e99e1a5273.png"> -->
+        </div>
+        <div id="discordconnect">
+            <p>DailyRP<a href="https://discord.gg/wy8m7GCz6C" target="_blank" button type="discord" class="dbutton">Tilslut DailyRP</button></a>     <div id="members-count"></div>
+        </div>
+    </div>
+</section>
+<section id="discordwidget">
+<div style="margin-left: 10px;" class="some">
+    <div id="discordlogo">
+      <a href="https://discord.gg/wxZ6PqC"><img href="#" target="_blank" src="https://cdn.discordapp.com/attachments/776965869804716064/780454812256305192/survivalrp.png"></a>
+    <!-- <img href="#" target="_blank" src="https://forum.cfx.re/uploads/default/original/4X/f/7/b/f7bd789d9d3ad55ff91dc57979e485e99e1a5273.png"> -->
+    </div>
+    <div id="discordconnect">
+        <p>SurvivalRP<a href="https://discord.gg/wxZ6PqC" target="_blank" button type="discord" class="dbutton">Tilslut SurvivalRP</button></a>     <div id="members-count"></div>
+    </div>
+</div>
+</section>
+<!-- <section id="discordwidget">
+<div style="margin-left: 10px;" class="some">
+    <div id="discordlogo">
+      <a href="https://paypal.me/LasseMejdahl"><img href="#" target="_blank" src="https://i.imgur.com/919AqJS.png"></a>
+    </div>
+    <div id="discordconnect">
+        <p>Din server her? Priser fra 50 kr.<a href="https://discord.com/users/171019545765478400" target="_blank" button type="discord" class="dbutton">Kontakt Lasse Christensen#0001</button></a>     <div id="members-count"></div>
+    </div>
+</div>
+</section> -->
+<p style="font-size: 11px; " onclick=removeSponsoredAds();>Tryk her for at fjerne server reklamer</p>
+</center>
+</div>
+<p style="font-size: 11px; " id="addSponsoredAds" onclick=addSponsoredAds();>Tryk her for at se server reklamer</p>
+<p style="font-size: 11px; ">Du kan stemme på én server pr. dag.</p>
+
+<!-- Lad os lave noget stats -->
+<!-- <?php
+$apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"), true);
+?> -->
+
+<section style="text-align:center" id="stats">
+<script>
+  fetch('http://192.168.0.190/api') // Call the fetch function passing the url of the API as a parameter
+  .then((resp) => resp.json()) // Transform the data into json
+  .then(function(data) {
+      console.log(data)
+
+
+  document.getElementById('stats').innerHTML = `<div class="countDiv">
+        <h1>Votes i alt</h1>
+        <p class="count">${data['result'][0]['total']}</span>
+    </div>
+    <div class="countDiv2">
+        <h1>Votes i dag</h1>
+        <p  class="count">${data['result2'][0]['today']}</span>
+    </div>
+    <div class="countDiv2">
+        <h1>Forskellige voters</h1>
+        <p  class="count">${data['result3'][0]['ips']}</span>
+    </div>
+    <div class="countDiv2">
+        <h1>Samlet spillertal</h1>
+        <p  class="count">${data['result4'][0]['clients']}</span>
+    </div>
+    <!-- <div class="countDiv2">
+        <h1>Maks spillere</h1>
+        <p  class="count"><?php echo $apiData['max'] ?></span>
+    </div> -->
+    <br>`
+  })
+  .catch(function() {
+      // This is where you run code if the server returns any errors
+  });
+
+</script>
+
+</section>
+<!-- <center><input type="text" id="searchResource"><input type="submit" onclick="sogResource()" value="Søg" placeholder="Server navn:"></center> -->
+<h3 id="searchResult"></h3>
+<section>
+<center>
+<table class="servers" id="servers">
+    <tr>
+        <th>#</th>
+        <th>Navn</th>
+        <th>IP</th>
+        <th>Online</th>
+        <th>Points</th>
+        <!-- <th>Modder inde</th> -->
+        <th>Læs mere</th>
+        <th>Vote</th>
+    </tr>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script type='text/javascript'>
+  const sendGetRequest = async () => {
+  var row =<%-JSON.stringify(result)%>
+  // console.table(row)
+  servers = document.getElementById('servers')
+
+  row.reverse();
+  for (let i = 0; i < row.length; i++) {
+
+    // console.table(row[i])
+
+    if (row['port'] == 1) {
+      // console.log("test")
+      port['port'] == "";
+    }
+
+    try {
+      const server = await axios.get('https://servers-frontend.fivem.net/api/servers/single/'+row[i]['ip']);
+
+
+
+          online = await server['data']['Data']['clients'];
+          max = server['data']['Data']['sv_maxclients'];
+          if (max) {
+            max = max;
+          }
+          else {
+            max = "?";
+          }
+
+          //Logo maker
+          if (typeof server['data']['Data']['iconVersion'] !== 'UNDEFINED') {
+
+            logoVersion = server['data']['Data']['iconVersion'];
+          ip = row[i]['ip'];
+          // console.log("https://servers-live.fivem.net/servers/icon/"+ip+"/"+logoVersion+".png")
+          if (logoVersion) {
+            logo = "https://servers-live.fivem.net/servers/icon/"+ip+"/"+logoVersion+".png";
+          }
+          else {
+            logo = "https://i.imgur.com/Hk8dQhI.png";
+          }
+        }
+
+          // if (isset($row['logo'])) {
+
+
+
+
+
+
+          if (!row[i]['max'] == 0) {
+            servers.innerHTML += `
+            <tr><td><img style='width: 35%;' src='${logo}'></td>
+            <td>${row[i]["name"]}</td>
+            <td>cfx.re/join/${row[i]["ip"]}</td>
+            <td>${online} / ${max}</td>
+            <td>${row[i]['points']}</td>
+            <td><a href='server/${row[i]['ip']}'>Læs mere</a></td>
+            <td><a class='vote' href='#' onclick=vote('${row[i]['ip']}')>+1</a></td>
+            </tr>
+            `
+          }
+
+      // })
+  } catch (err) {
+     // Handle Error Here
+     console.error(err);
+ }
+};
+
+
+
+  }
+sendGetRequest()
+
+</script>
+
+<script>
+  fetch('https://fivem.dk/functions/getClients.php')
+  .then((resp) => resp.json())
+  .then(function(data) {
+
+  })
+  .catch(function() {
+
+  });
+
+</script>
+</table>
+</center>
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113210248-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113210248-1');
+</script>
+
+<script>
+
+function vote(server) {
+
+
+const endpoint = 'vote/'+server;
+
+fetch(endpoint, {
+    method: 'GET',
+})
+.then((resp) => resp.json())
+.then(function(response) {
+    console.info('fetch()', response);
+    return response;
+    location.reload();
+return false;
+});
+
+}
+
+
+function removeSponsoredAds() {
+  document.querySelector("body > div").style.display = "none";
+  document.cookie = "ads=noShow";
+  document.getElementById("addSponsoredAds").style.display = "block";
+}
+if (document.cookie.includes("ads=noShow")) {
+  document.querySelector("body > div").style.display = "none";
+}
+else {
+  document.getElementById("addSponsoredAds").style.display = "none";
+
+}
+function addSponsoredAds() {
+  document.getElementById("addSponsoredAds").style.display = "none";
+    document.querySelector("body > div").style.display = "block";
+  document.cookie = "ads=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+</script>
+
+
+
+
+
+
+
+<%- include ("../partials/footer") %>

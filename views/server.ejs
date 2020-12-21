@@ -1,0 +1,193 @@
+<%- include ("../partials/header") %>
+
+
+<meta name="google-site-verification" content="bEPLx5umDPUfC2fswoYZnYFZ_3uQIYaHNkMdozNrWVQ" />
+
+<style media="screen">
+  tr:nth-child(even){background-color: #f2f2f2;}
+  .index-page {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #505050;
+    border-radius: 5px;
+    border-color: black;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+</style>
+
+
+<script>
+
+var row =<%-JSON.stringify(result)%>
+// console.log(row)
+  fetch(`https://servers-frontend.fivem.net/api/servers/single/${row[0]['ip']}`) // Call the fetch function passing the url of the API as a parameter
+  .then((resp) => resp.json()) // Transform the data into json
+  .then(function(server) {
+
+
+
+// server = json_decode(@file_get_contents("https://servers-frontend.fivem.net/api/servers/single/".$row['ip']), true);
+online = server['Data']['clients'];
+max = server['Data']['sv_maxclients'];
+
+//Tjek efter OneSync
+if (server['Data']['vars']['onesync_enabled'] == "true") {
+  onesync = "Ja";
+}
+else {
+  onesync = "Nej";
+}
+
+//FXServer version
+version = server['Data']['server'];
+version = version.replace("FXServer-master SERVER v1.0.0.","");
+version = version.replace("win32","");
+
+//Antal resourcer
+resources = server['Data']['resources'].length;
+
+//Logo maker
+logoVersion = server['Data']['iconVersion'];
+logo = `https://servers-live.fivem.net/servers/icon/${row[0]['ip']}/${logoVersion}.png`;
+
+//Discord
+if (server['Data']['vars']['Discord']) {
+  discrd = server['Data']['vars']['Discord'];
+  if (discrd.includes("discord") !== false) {
+    discord = server['Data']['vars']['Discord'];
+  }
+  else {
+    discord = "https://" . server['Data']['vars']['Discord'];
+  }
+}
+//Discord
+if (server['Data']['vars']['discord']) {
+  discrd = server['Data']['vars']['discord'];
+  if (discrd.includes("http") !== false) {
+    discord = server['Data']['vars']['discord'];
+  } else {
+    discord = "https://" . server['Data']['vars']['discord'];
+  }
+}
+
+//TxAdmin tjekker
+if (server['Data']['vars']['txAdmin-version']) {
+  txAdmin = "Ja";
+}
+else {
+  txAdmin = "Nej";
+}
+
+//vRP tjekker
+resourcer = server['Data']['resources'];
+if (resourcer.includes("vrp_bank") || resourcer.includes("vrp_showroom")) {
+  framework = "vRP";
+}
+else {
+  framework = "ESX eller andet";
+}
+
+
+document.getElementById('stats').innerHTML = `
+<div class="countDiv">
+    <h1>Spillere online:</h1>
+    <p class="count">${online}
+</div>
+<div class="countDiv2">
+    <h1>Framework:</h1>
+    <p  class="count">${framework}
+</div>
+<div class="countDiv2">
+    <h1>OneSync:</h1>
+    <p  class="count">${onesync}
+</div>
+<div class="countDiv2">
+    <h1>FXServer build:</h1>
+    <p  class="count">${version}
+</div>
+<div class="countDiv2">
+    <h1>Resourcer</h1>
+    <p  class="count">${resources}
+</div>
+<div class="countDiv2">
+    <h1>TxAdmin:</h1>
+    <p  class="count">${txAdmin}
+</div>
+<div class="countDiv2">
+    <h1>Points:</h1>
+    <p  class="count">${row[0]['points']}
+</div>
+<br>`
+
+document.getElementById('partnere').innerHTML = `<center>
+
+    <section id="discordwidget">
+        <div class="some">
+            <div id="discordlogo">
+            <img href="${discord}" target="_blank" src="${logo}">
+            </div>
+            <div id="discordconnect">
+                <p>${row[0]['name']}<a href="${discord}" target="_blank" button type="discord" class="dbutton">Join ${row[0]['name']}</a>
+            </div>
+        </div>
+        </section>
+
+<section id="discordwidget">
+<div style="margin-left: 10px;" class="some">
+    <div id="discordlogo">
+      <img href="#" src="https://external-preview.redd.it/CPf2VqNDrkT6l3RMpDkA4QdHzwrOhlzmG4OSIKRCfVQ.png?auto=webp&s=85d0125dd2b065a30624ed8e6e014b3346ae1bfd">
+    </div>
+    <div id="discordconnect">
+        <p>Connect via FiveM<a href="fivem://connect/${row[0]['ip']}" button type="discord" class="dbutton">Tilslut til ${row[0]['name']}</a>     <div id="members-count"></div>
+    </div>
+</div>`
+
+document.getElementById('index-page').innerHTML = `${row[0]['about']}`
+
+})
+.catch(function() {
+    // This is where you run code if the server returns any errors
+});
+
+</script>
+
+
+<section style="text-align:center" id="stats">
+
+
+</section>
+
+</section>
+<div class="partnere" id="partnere">
+
+</section></center>
+</div>
+
+<div class="index-page" id="index-page">
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113210248-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113210248-1');
+</script>
+
+
+
+
+<%- include ("../partials/footer") %>

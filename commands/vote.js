@@ -13,15 +13,15 @@ module.exports = {
 
 		const server = args.join(" ");
 		const identifier = message.author.id;
-		var url = "https://fivem.dk/functions/api.php?server="+server
+		var url = "http://localhost/api/"+server
 		axios.get(url)
 			.then(function (response) {
 				// handle success
 				// console.log(response);
 
 				if (server) {
-
-					if (typeof response['data']['server_name'] === "undefined") {
+					console.table(response['data'])
+					if (typeof response['data']['result6'][0] === "undefined") {
 						message.channel.send("Du har ikke defineret en server, ellers findes denne server ikke på vores liste. Tjek listen på https://fivem.dk")
 						return;
 					}
@@ -37,7 +37,7 @@ module.exports = {
 								var sql = "INSERT INTO votes (identifier, server, curdate) VALUES ('"+identifier+"', '"+server+"', CURDATE())";
 							  con.query(sql, function (err, result) {
 							    if (err) throw err;
-									message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['server_name']+"), mange tak. - Husk at stem igen i morgen!\nHusk du kan stemme 2 gange hvis du også stemmer inde på https://fivem.dk");
+									message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['result6'][0]['name']+"), mange tak. - Husk at stem igen i morgen!\nHusk du kan stemme 2 gange hvis du også stemmer inde på https://fivem.dk");
 									// message.channel.send(message.author.id)
 
 										var sql = "UPDATE servers SET points=points+1 WHERE ip='"+server+"'";
@@ -52,7 +52,7 @@ module.exports = {
 							var sql = "INSERT INTO votes (identifier, server, curdate) VALUES ('"+identifier+"', '"+server+"', CURDATE())";
 						  con.query(sql, function (err, result) {
 						    if (err) throw err;
-								message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['server_name']+"), mange tak. - Husk at stem igen i morgen!");
+								message.channel.send("Du har stemt på serveren ``"+server+"`` ("+response['data']['result6'][0]['namr']+"), mange tak. - Husk at stem igen i morgen!");
 								// message.channel.send(message.author.id)
 
 									var sql = "UPDATE servers SET points=points+1 WHERE ip='"+server+"'";
