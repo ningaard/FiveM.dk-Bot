@@ -68,7 +68,7 @@ app.get('/api', function (req, res) {
 app.get('/getUser/:identifier', function (req, res) {
   var identifier = req.params.identifier
   console.log(identifier)
-  axios.defaults.headers.common['Authorization'] = "Bot Nzc3NTUzMzY2MDU4MDA4NTg2.X7FHAA.spmwaLIn16Dc13pEMoiBV-PfwlA";
+  axios.defaults.headers.common['Authorization'] = "Bot "+config.token;
   axios.get(`https://discordapp.com/api/users/${identifier}`)
   .then(function (response) {
     res.json(response['data'])
