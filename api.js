@@ -100,7 +100,15 @@ app.get('/vote/:server', function (req, res) {
 
 })
 
+app.use(function(req, res, next){
+  res.status(404);
 
+  // respond with html page
+  if (req.accepts('html')) {
+    res.render('404', { url: req.url });
+    return;
+  }
+});
 
 app.listen(port, () => {
   console.log(`API'en køre på http://fivem.dk:${port}`)
