@@ -21,7 +21,7 @@ module.exports = {
 
 					for (var i = 0; i < result.length; i++) {
 						y = i + 1
-						cmds += `**${y}.** ***${result[i]['command']}*** - ${result[i]['shortcut']}\n`
+						cmds += `**${y}.** ***${result[i]['command']}***\n`
 						// console.log(i + " = " + result.length)
 						if (i+1 == result.length) {
 							message.channel.send(`**Alle kommandoer:**\n${cmds}`);

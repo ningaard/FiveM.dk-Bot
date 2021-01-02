@@ -47,8 +47,8 @@ module.exports = {
 
 							var embed = new Discord.MessageEmbed()
 									.setTitle("FiveM Ticket System")
-									// .setDescription("Opret en ticket ved at reagere på ✉️ nedenfor.");
-									.setDescription("Opret en ticket ved at reagere på brevet nedenfor.")
+									.setDescription("Opret en ticket ved at reagere på ✉️ nedenfor.");
+									// .setDescription("Opret en ticket ved at reagere på brevet nedenfor.")
 
 									parent.send({embed: embed}).then(embedMessage => {
 		    						embedMessage.react("✉️");
