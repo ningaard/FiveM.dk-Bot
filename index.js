@@ -19,4 +19,12 @@ client.on('messageReactionAdd', (reaction, user) => {
 	client.events.get('createTicket').execute(reaction, user)
 });
 
+client.on('guildMemberAdd', member => {
+	client.events.get('guildMemberUpdate').execute(member, 1, client)
+})
+
+client.on('guildMemberRemove', member => {
+		client.events.get('guildMemberUpdate').execute(member, 0, client)
+});
+
 client.login(config.token)
