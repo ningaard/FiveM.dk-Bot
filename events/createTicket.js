@@ -5,7 +5,6 @@ module.exports = {
 	name: 'createTicket',
 	async execute(reaction, user) {
 		        let message = reaction.message, emoji = reaction.emoji;
-						console.log(user)
 						if (user.bot) return;
 						// console.log(message.channel.name)
 						if (message.channel.name == "opret-ticket") {

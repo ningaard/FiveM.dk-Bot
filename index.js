@@ -7,24 +7,56 @@ const client = new Discord.Client();
 const config = require("./config.json");
 var events = require('./handlers/events')(client);
 
-client.on('ready', async () => {
+const guildInvites = new Map();
+
+client.on('ready', () => {
 	client.events.get('ready').execute(client)
+	client.guilds.cache.forEach(guild => {
+		guild.fetchInvites()
+		.then(invites => guildInvites.set(guild.id, invites))
+		.catch(err => console.log(err));
+	});
 });
+
 
 client.on("message", async message => {
 	client.events.get('message').execute(message)
+	client.events.get('log').execute(message)
 })
 
 client.on('messageReactionAdd', (reaction, user) => {
 	client.events.get('createTicket').execute(reaction, user)
 });
 
-client.on('guildMemberAdd', member => {
-	client.events.get('guildMemberUpdate').execute(member, 1, client)
-})
+// client.on('guildMemberAdd', member => {
+// 	client.events.get('guildMemberAdd').execute(member, client)
+// })
 
-client.on('guildMemberRemove', member => {
-		client.events.get('guildMemberUpdate').execute(member, 0, client)
+
+
+client.on('guildMemberAdd', async member => {
+		const cachedInvites = guildInvites.get(member.guild.id);
+		const newInvites = await member.guild.fetchInvites();
+		guildInvites.set(member.guild.id, newInvites);
+		try {
+				const usedInvite = newInvites.find(inv => cachedInvites.get(inv.code).uses < inv.uses);
+
+				const logChannel = member.guild.channels.cache.find(channel => channel.name === "invites")
+				if(logChannel) {
+					if (usedInvite) {
+						logChannel.send(`<@${member.user.id}> joinede **${member.guild.name}!** <@${member.user.id}> blev inviteret af ${usedInvite.inviter.tag}, (${usedInvite.inviter.tag} har hele **${usedInvite.uses}** invites)`)
+					}
+					else {
+						logChannel.send(`<@${member.user.tag}> joinede **${member.guild.name}!**`)
+					}
+				}
+
+		}
+		catch(err) {
+				console.log(err);
+		}
 });
+
+
 
 client.login(config.token)

@@ -12,7 +12,7 @@
 </section>
 <div class="partnere">
 <center>
-    <section id="discordwidget">
+    <!-- <section id="discordwidget">
         <div class="some">
             <div id="discordlogo">
             <img href="https://discord.gg/VHDPNxezQc" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787022117165072424/Olympia_Network-01.png">
@@ -21,7 +21,7 @@
                 <p>Olympia Network<a href="https://discord.gg/VHDPNxezQc" target="_blank" button type="discord" class="dbutton">Tilslut Olympia Network</button></a>     <div id="members-count"></div>
             </div>
         </div>
-        </section>
+        </section> -->
         <!-- <section id="discordwidget">
         <div style="margin-left: 10px;" class="some">
             <div id="discordlogo">
@@ -124,7 +124,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 <script type='text/javascript'>
   const sendGetRequest = async () => {
   var row =<%-JSON.stringify(result)%>
-  // console.table(row)
+  console.table(row)
   servers = document.getElementById('servers')
 
   row.reverse();
@@ -138,12 +138,17 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
     }
 
     try {
+      console.log(row[i]['ip'])
       const server = await axios.get('https://servers-frontend.fivem.net/api/servers/single/'+row[i]['ip']);
 
 
 
           online = await server['data']['Data']['clients'];
           max = server['data']['Data']['sv_maxclients'];
+
+          console.log(online)
+          console.log(max)
+
           if (max) {
             max = max;
           }
@@ -164,15 +169,15 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
             logo = "https://i.imgur.com/Hk8dQhI.png";
           }
         }
-
+        console.log(logo)
           // if (isset($row['logo'])) {
 
+          console.log('\n\n\n')
 
 
 
 
-
-          if (!row[i]['max'] == 0) {
+          // if (!row[i]['max'] == 0) {
             servers.innerHTML += `
             <tr><td><img style='width: 35%;' src='${logo}'></td>
             <td>${row[i]["name"]}</td>
@@ -183,7 +188,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
             <td><a class='vote' href='#' onclick=vote('${row[i]['ip']}')>+1</a></td>
             </tr>
             `
-          }
+          // }
 
       // })
   } catch (err) {

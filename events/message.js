@@ -23,6 +23,8 @@ module.exports = {
 		con.connect(function(err) {
 			    con.query("SELECT * FROM commands", function (err, result, fields) {
 			      // console.log(result);
+						if (result) {
+
 			      for (var i = 0; i < result.length; i++) {
 			        if (message.content.toLowerCase() == "!" + result[i]['command'].toLowerCase()) {
 								// console.log("test")
@@ -35,6 +37,7 @@ module.exports = {
 								message.channel.send({embed});
 			        }
 			      }
+					}
 			    });
 			  });
 
