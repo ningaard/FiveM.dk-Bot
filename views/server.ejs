@@ -5,6 +5,8 @@
 
 <style media="screen">
   tr:nth-child(even){background-color: #f2f2f2;}
+
+
   .index-page {
     width: 50%;
     margin: auto;
@@ -19,13 +21,46 @@
     font-size: 16px;
     margin-bottom: 5px;
 }
+
+  .players {
+    width: 10%;
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #505050;
+    border-radius: 5px;
+    border-color: black;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
 </style>
 
+<section style="text-align:center" id="stats">
+
+
+</section>
+
+</section>
+<div class="partnere" id="partnere">
+
+</div>
+
+
+  <div class="index-page" id="index-page">
+
+  </div>
+  <div class="players" id="players">
+    <h2>Spillerliste</h2>
+  </div>
 
 <script>
 
 var row =<%-JSON.stringify(result)%>
-// console.log(row)
+
   fetch(`https://servers-frontend.fivem.net/api/servers/single/${row[0]['ip']}`) // Call the fetch function passing the url of the API as a parameter
   .then((resp) => resp.json()) // Transform the data into json
   .then(function(server) {
@@ -74,6 +109,9 @@ if (server['Data']['vars']['discord']) {
   } else {
     discord = "https://" . server['Data']['vars']['discord'];
   }
+}
+else {
+  discord = "";
 }
 
 //TxAdmin tjekker
@@ -148,30 +186,36 @@ document.getElementById('partnere').innerHTML = `<center>
     </div>
 </div>`
 
-document.getElementById('index-page').innerHTML = `${row[0]['about']}`
+
+
+
+players = server['Data']['players'];
+for (var i = 0; i < players.length; i++) {
+
+  document.getElementById('players').innerHTML += `${players[i]['name']}<br>`;
+}
+
+
+
+
+if (!row[0]['about']) {
+  about = "Denne server har ikke lavet en 'om os' side endnu.";
+}
+else {
+  about = row[0]['about']
+}
+
+document.getElementById('index-page').innerHTML = `${about}`
 
 })
-.catch(function() {
+.catch(function(err) {
     // This is where you run code if the server returns any errors
 });
 
 </script>
 
 
-<section style="text-align:center" id="stats">
 
-
-</section>
-
-</section>
-<div class="partnere" id="partnere">
-
-</section></center>
-</div>
-
-<div class="index-page" id="index-page">
-
-</div>
 
 
 

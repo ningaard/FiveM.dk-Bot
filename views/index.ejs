@@ -70,7 +70,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
   fetch('http://192.168.0.190/api') // Call the fetch function passing the url of the API as a parameter
   .then((resp) => resp.json()) // Transform the data into json
   .then(function(data) {
-      console.log(data)
+
 
 
   document.getElementById('stats').innerHTML = `<div class="countDiv">
@@ -124,21 +124,21 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 <script type='text/javascript'>
   const sendGetRequest = async () => {
   var row =<%-JSON.stringify(result)%>
-  console.table(row)
+
   servers = document.getElementById('servers')
 
   row.reverse();
   for (let i = 0; i < row.length; i++) {
 
-    // console.table(row[i])
+
 
     if (row['port'] == 1) {
-      // console.log("test")
+
       port['port'] == "";
     }
 
     try {
-      console.log(row[i]['ip'])
+
       const server = await axios.get('https://servers-frontend.fivem.net/api/servers/single/'+row[i]['ip']);
 
 
@@ -146,8 +146,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
           online = await server['data']['Data']['clients'];
           max = server['data']['Data']['sv_maxclients'];
 
-          console.log(online)
-          console.log(max)
+
 
           if (max) {
             max = max;
@@ -161,7 +160,6 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 
             logoVersion = server['data']['Data']['iconVersion'];
           ip = row[i]['ip'];
-          // console.log("https://servers-live.fivem.net/servers/icon/"+ip+"/"+logoVersion+".png")
           if (logoVersion) {
             logo = "https://servers-live.fivem.net/servers/icon/"+ip+"/"+logoVersion+".png";
           }
@@ -169,10 +167,10 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
             logo = "https://i.imgur.com/Hk8dQhI.png";
           }
         }
-        console.log(logo)
+
           // if (isset($row['logo'])) {
 
-          console.log('\n\n\n')
+
 
 
 
@@ -193,7 +191,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
       // })
   } catch (err) {
      // Handle Error Here
-     console.error(err);
+
  }
 };
 
@@ -243,7 +241,7 @@ fetch(endpoint, {
 })
 .then((resp) => resp.json())
 .then(function(response) {
-    console.info('fetch()', response);
+    
     return response;
     location.reload();
 return false;

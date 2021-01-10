@@ -53,7 +53,7 @@ client.on('guildMemberAdd', async member => {
 
 		}
 		catch(err) {
-				console.log(err);
+				// console.log(err);
 		}
 });
 
