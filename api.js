@@ -13,6 +13,12 @@ const port = 80
 var path = require('path');
 var events = require('./handlers/events')(client);
 
+client.on('ready', () => {
+	console.log("API kan tage Discord kald")
+});
+client.login(config.token)
+
+
 app.use(express.static(__dirname + '/partials'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +39,10 @@ app.get('/server/:server', function (req, res) {
 app.get('/docs', function (req, res) {
   var server = req.params.server
   res.render('docs', {title: 'title'});
+});
+
+app.get('/discord', function(req, res) {
+  res.redirect('https://discord.gg/DTqjKbR');
 });
 
 app.get('/api/:server', function (req, res) {
@@ -151,7 +161,7 @@ app.get('/defender/version', function (req, res) {
 
 app.post('/webhook/:hook/:message', function (req, res) {
   var message = req.params.message
-  client.events.get('webhook').execute(message, client)
+  client.events.get('webhook').execute(client, message)
   res.send(message)
   // client.guilds.get('621288307099303966').channels.get('687445302755721289').send("Message");
 })

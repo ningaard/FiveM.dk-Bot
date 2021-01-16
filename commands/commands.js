@@ -14,7 +14,8 @@ module.exports = {
 		var cmds = ""
 		const server = args.join(" ");
 		con.query("SELECT * FROM commands ", function (err, result, fields) {
-			// console.log(result);
+			console.log(result[0]['command']);
+			// if (typeof result !=="undefined") return false;
 			if (typeof result[0] !== "undefined") {
 
 				if (typeof result[0]['command'] !== "undefined" ) {

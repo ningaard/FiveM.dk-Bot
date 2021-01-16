@@ -15,7 +15,10 @@ client.on('ready', () => {
 		guild.fetchInvites()
 		.then(invites => guildInvites.set(guild.id, invites))
 		.catch(err => console.log(err));
+		console.log(`${guild.name} - ${guild.memberCount}`)
 	});
+	test = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
+	console.log(test)
 });
 
 
