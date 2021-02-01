@@ -66,7 +66,6 @@ var row =<%-JSON.stringify(result)%>
   .then(function(server) {
 
 
-
 // server = json_decode(@file_get_contents("https://servers-frontend.fivem.net/api/servers/single/".$row['ip']), true);
 online = server['Data']['clients'];
 max = server['Data']['sv_maxclients'];
@@ -79,6 +78,8 @@ else {
   onesync = "Nej";
 }
 
+
+
 //FXServer version
 version = server['Data']['server'];
 version = version.replace("FXServer-master SERVER v1.0.0.","");
@@ -90,11 +91,10 @@ resources = server['Data']['resources'].length;
 //Logo maker
 logoVersion = server['Data']['iconVersion'];
 logo = `https://servers-live.fivem.net/servers/icon/${row[0]['ip']}/${logoVersion}.png`;
-
 //Discord
 if (server['Data']['vars']['Discord']) {
   discrd = server['Data']['vars']['Discord'];
-  if (discrd.includes("discord") !== false) {
+  if (discrd.includes("discord") !== false || discrd.includes("Discord")) {
     discord = server['Data']['vars']['Discord'];
   }
   else {
@@ -104,7 +104,7 @@ if (server['Data']['vars']['Discord']) {
 //Discord
 if (server['Data']['vars']['discord']) {
   discrd = server['Data']['vars']['discord'];
-  if (discrd.includes("http") !== false) {
+  if (discrd.includes("http") !== false || discrd.includes("Discord")) {
     discord = server['Data']['vars']['discord'];
   } else {
     discord = "https://" . server['Data']['vars']['discord'];
@@ -114,6 +114,7 @@ else {
   discord = "";
 }
 
+
 //TxAdmin tjekker
 if (server['Data']['vars']['txAdmin-version']) {
   txAdmin = "Ja";
@@ -121,6 +122,7 @@ if (server['Data']['vars']['txAdmin-version']) {
 else {
   txAdmin = "Nej";
 }
+
 
 //vRP tjekker
 resourcer = server['Data']['resources'];

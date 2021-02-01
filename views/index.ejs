@@ -15,7 +15,7 @@
     <!-- <section id="discordwidget">
         <div class="some">
             <div id="discordlogo">
-            <img href="https://discord.gg/VHDPNxezQc" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787022117165072424/Olympia_Network-01.png">
+            <img href="https://discord.gg/2Bf2cpZeaH" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787022117165072424/Olympia_Network-01.png">
             </div>
             <div id="discordconnect">
                 <p>Olympia Network<a href="https://discord.gg/VHDPNxezQc" target="_blank" button type="discord" class="dbutton">Tilslut Olympia Network</button></a>     <div id="members-count"></div>
@@ -32,17 +32,16 @@
             </div>
         </div>
     </section> -->
-    <section id="discordwidget">
+    <!-- <section id="discordwidget">
     <div style="margin-left: 10px;" class="some">
         <div id="discordlogo">
           <a href="https://discord.gg/wy8m7GCz6C"><img style="border-radius:5%;" href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787014525043605554/Udklipccc.png"></a>
-        <!-- <img href="#" target="_blank" src="https://forum.cfx.re/uploads/default/original/4X/f/7/b/f7bd789d9d3ad55ff91dc57979e485e99e1a5273.png"> -->
         </div>
         <div id="discordconnect">
             <p>DailyRP<a href="https://discord.gg/wy8m7GCz6C" target="_blank" button type="discord" class="dbutton">Tilslut DailyRP</button></a>     <div id="members-count"></div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- <section id="discordwidget">
 <div style="margin-left: 10px;" class="some">
@@ -67,7 +66,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 
 <section style="text-align:center" id="stats">
 <script>
-  fetch('http://192.168.0.190/api') // Call the fetch function passing the url of the API as a parameter
+  fetch('http://192.168.0.190/api/v1') // Call the fetch function passing the url of the API as a parameter
   .then((resp) => resp.json()) // Transform the data into json
   .then(function(data) {
 
@@ -241,7 +240,7 @@ fetch(endpoint, {
 })
 .then((resp) => resp.json())
 .then(function(response) {
-    
+
     return response;
     location.reload();
 return false;
