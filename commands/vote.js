@@ -13,7 +13,7 @@ module.exports = {
 
 		const server = args.join(" ");
 		const identifier = message.author.id;
-		var url = "http://localhost/api/"+server
+		var url = "http://localhost/api/v1/"+server
 		axios.get(url)
 			.then(function (response) {
 				// handle success

@@ -12,11 +12,12 @@ const app = express()
 const port = 80
 var path = require('path');
 var events = require('./handlers/events')(client);
+const iplocate = require("node-iplocate");
 
-client.on('ready', () => {
-	console.log("API kan tage Discord kald")
-});
-client.login(config.token)
+// client.on('ready', () => {
+// 	console.log("API kan tage Discord kald")
+// });
+// client.login(config.token)
 
 
 app.use(express.static(__dirname + '/partials'));
@@ -45,7 +46,7 @@ app.get('/discord', function(req, res) {
   res.redirect('https://discord.gg/DTqjKbR');
 });
 
-app.get('/api/:server', function (req, res) {
+app.get('/api/v1/:server', function (req, res) {
   var server = req.params.server
   con.query('SELECT count(server) as total FROM votes WHERE server = "'+server+'"', function (err, result, fields) {
     con.query('SELECT count(server) as today FROM votes WHERE curdate = CURDATE() AND server = "'+server+'"', function (err, result2, fields) {
@@ -53,7 +54,6 @@ app.get('/api/:server', function (req, res) {
         con.query('SELECT sum(clients) as clients FROM servers WHERE ip = "'+server+'"', function (err, result4, fields) {
           con.query('SELECT sum(max) as max FROM servers WHERE ip = "'+server+'"', function (err, result5, fields) {
             con.query('SELECT name FROM servers WHERE ip = "'+server+'"', function (err, result6, fields) {
-
               res.json({result, result2, result3, result4, result5, result6})
             })
           })
@@ -61,25 +61,22 @@ app.get('/api/:server', function (req, res) {
       })
     })
   })
-
 })
 
 
-app.get('/api', function (req, res) {
+app.get('/api/v1', function (req, res) {
   con.query('SELECT count(server) as total FROM votes', function (err, result, fields) {
     con.query('SELECT count(server) as today FROM votes WHERE curdate = CURDATE()', function (err, result2, fields) {
       con.query('SELECT count( DISTINCT(ip) ) as ips FROM votes', function (err, result3, fields) {
         con.query('SELECT sum(clients) as clients FROM servers', function (err, result4, fields) {
           con.query('SELECT sum(max) as max FROM servers', function (err, result5, fields) {
           result6 = [{'name':'FiveM.dk'}]
-
             res.json({result, result2, result3, result4, result5, result6})
           })
         })
       })
     })
   })
-
 })
 
 app.get('/getUser/:identifier', function (req, res) {
@@ -101,18 +98,27 @@ app.get('/vote/:server', function (req, res) {
   var server = req.params.server
   ipa = req.connection.remoteAddress
   ip = ipa.replace("::ffff:", "")
-  con.query(`SELECT * FROM votes WHERE ip = ? AND curdate = CURDATE()`, [ip], function (err, result, fields) {
-    if (!result[0]) {
-      con.query(`INSERT INTO votes (ip, server, curdate)
-              VALUES ('${ip}', '${server}', CURDATE())`, function (err, result, fields) {
-        con.query(`UPDATE servers SET points=points+1 WHERE ip='${server}'`, function (err, result, fields) {
 
-          res.json(result)
 
-        })
+  iplocate(ip).then(function(results) {
+
+    if (results.country === "Denmark") {
+
+      con.query(`SELECT * FROM votes WHERE ip = ? AND curdate = CURDATE()`, [ip], function (err, result, fields) {
+        if (!result[0]) {
+          con.query(`INSERT INTO votes (ip, server, curdate)
+          VALUES ('${ip}', '${server}', CURDATE())`, function (err, result, fields) {
+            con.query(`UPDATE servers SET points=points+1 WHERE ip='${server}'`, function (err, result, fields) {
+
+              res.json(result)
+
+            })
+          })
+        }
       })
     }
   })
+
 
 })
 
@@ -121,20 +127,23 @@ app.get('/defender/single/:identifier', function (req, res) {
   var identifier = req.params.identifier
   checks = ['steam_id', 'xbox_id', 'live_id', 'license_id', 'discord_id'];
   try {
-    def.query(`SELECT * FROM moddersteam WHERE ${checks[0]} = '${identifier}'
-    OR ${checks[1]} = '${identifier}'
-    OR ${checks[2]} = '${identifier}'
-    OR ${checks[3]} = '${identifier}'
-    OR ${checks[4]} = '${identifier}'`, function (err, result, fields) {
-      if (typeof result == "undefined") return res.json({'status': 'not found'})
-      if (typeof result[0] !== "undefined") {
-        // res.json(result)
-        res.json({ 'status': 'found' })
-      }
-      else {
-        res.json({ 'status': 'not found' })
-      }
-    })
+
+		def.connect(function(err) {
+	    def.query(`SELECT * FROM moddersteam WHERE ${checks[0]} = '${identifier}'
+	    OR ${checks[1]} = '${identifier}'
+	    OR ${checks[2]} = '${identifier}'
+	    OR ${checks[3]} = '${identifier}'
+	    OR ${checks[4]} = '${identifier}'`, function (err, result, fields) {
+	      if (typeof result == "undefined") return res.json({'status': 'not found'})
+	      if (typeof result[0] !== "undefined") {
+	        // res.json(result)
+	        res.json({ 'status': 'found' })
+	      }
+	      else {
+	        res.json({ 'status': 'not found' })
+	      }
+	    })
+		})
   } catch (e) {
     console.log(e)
   }
@@ -143,17 +152,42 @@ app.get('/defender/single/:identifier', function (req, res) {
 
 app.get('/defender/all', function (req, res) {
   try {
-    def.query("SELECT * FROM moddersteam", function (err, result, fields) {
-      res.json(result)
-    })
+		def.connect(function(err) {
+	    def.query("SELECT * FROM moddersteam", function (err, result, fields) {
+	      res.json(result)
+	    })
+		})
   } catch (e) {
     console.log(e)
   }
 });
 
+//
+// app.get('/defender/report/:name/:steam/:license/:live/:xbl/:discord/:proof', function (req, res) {
+//   var name = req.params.name
+//   var steam = req.params.steam
+//   var license = req.params.license
+//   var live = req.params.live
+//   var xbl = req.params.xbl
+//   var discord = req.params.discord
+//   var proof = req.params.proof
+//
+//   try {
+// 		def.connect(function(err) {
+//       var sql = "INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')";
+//       def.query(sql, function (err, result) {
+//         if (err) throw err;
+//         console.log("1 record inserted");
+//       });
+// 		})
+//   } catch (e) {
+//     console.log(e)
+//   }
+// });
+
 app.get('/defender/version', function (req, res) {
   try {
-    res.send("1.2")
+    res.send("1.3")
   } catch (e) {
     console.log(e)
   }

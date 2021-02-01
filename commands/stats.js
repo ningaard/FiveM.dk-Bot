@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args) {
 
 		const server = args.join(" ");
-		var url = "http://localhost/api/"+server
+		var url = "http://localhost/api/v1/"+server
 		axios.get(url)
 			.then(function (response) {
 				// handle success
