@@ -193,8 +193,8 @@ document.getElementById('partnere').innerHTML = `<center>
 
 players = server['Data']['players'];
 for (var i = 0; i < players.length; i++) {
-
-  document.getElementById('players').innerHTML += `${players[i]['name']}<br>`;
+  
+  document.getElementById('players').innerHTML += `${players[i]['name']} - ${players[i]['id']}<br>`;
 }
 
 

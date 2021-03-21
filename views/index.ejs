@@ -22,23 +22,23 @@
             </div>
         </div>
         </section> -->
-        <!-- <section id="discordwidget">
+        <section id="discordwidget">
         <div style="margin-left: 10px;" class="some">
             <div id="discordlogo">
-          <img href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/777244889503105085/banner.png">
+          <img href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/810463856228958258/Logo_til_reglerne.png">
             </div>
             <div id="discordconnect">
-                <p>FirstChoice<a href="https://discord.gg/r3BEbHg" target="_blank" button type="discord" class="dbutton">Tilslut FirstChoice</button></a>     <div id="members-count"></div>
+                <p>MazeTown<a href="https://discord.gg/6TQW6Jv" target="_blank" button type="discord" class="dbutton">Tilslut MazeTown</a>     <div id="members-count"></div>
             </div>
         </div>
-    </section> -->
+    </section>
     <!-- <section id="discordwidget">
     <div style="margin-left: 10px;" class="some">
         <div id="discordlogo">
           <a href="https://discord.gg/wy8m7GCz6C"><img style="border-radius:5%;" href="#" target="_blank" src="https://cdn.discordapp.com/attachments/693494144466681896/787014525043605554/Udklipccc.png"></a>
         </div>
         <div id="discordconnect">
-            <p>DailyRP<a href="https://discord.gg/wy8m7GCz6C" target="_blank" button type="discord" class="dbutton">Tilslut DailyRP</button></a>     <div id="members-count"></div>
+            <p>DailyRP<a href="https://discord.gg/wy8m7GCz6C" target="_blank" button type="discord" class="dbutton">Tilslut DailyRP</a>     <div id="members-count"></div>
         </div>
     </div>
 </section> -->
@@ -66,7 +66,7 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 
 <section style="text-align:center" id="stats">
 <script>
-  fetch('http://192.168.0.190/api/v1') // Call the fetch function passing the url of the API as a parameter
+  fetch('api/v1') // Call the fetch function passing the url of the API as a parameter
   .then((resp) => resp.json()) // Transform the data into json
   .then(function(data) {
 
@@ -154,6 +154,8 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
             max = "?";
           }
 
+          gametype = server['data']['Data']['gametype']
+
           //Logo maker
           if (typeof server['data']['Data']['iconVersion'] !== 'UNDEFINED') {
 
@@ -170,7 +172,14 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
           // if (isset($row['logo'])) {
 
 
-
+          // fetch(`setClients/${row[i]['ip']}/${online}`)
+          // .then((resp) => resp.json())
+          // .then(function(data) {
+          //
+          // })
+          // .catch(function() {
+          //
+          // });
 
 
 
@@ -201,7 +210,7 @@ sendGetRequest()
 
 </script>
 
-<script>
+<!-- <script>
   fetch('https://fivem.dk/functions/getClients.php')
   .then((resp) => resp.json())
   .then(function(data) {
@@ -211,7 +220,7 @@ sendGetRequest()
 
   });
 
-</script>
+</script> -->
 </table>
 </center>
 

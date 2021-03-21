@@ -8,6 +8,7 @@ const axios = require('axios').default;
 
 module.exports = {
 	name: 'closeticket',
+  aliases: ["lukticket", "langkommandotilatlukkeenticketmed"],
 	description: 'Lukker en ticket',
 	async execute(message, args) {
 
@@ -20,7 +21,7 @@ module.exports = {
 					const categoryId = result[0]['ticketCategory']; //gør så man kun kan lukke tickets i den category som tickets bliver oprettet i
 
 				  if (message.channel.parentID == categoryId) {
-						
+
 				    message.channel.delete();
 				    var embed = new Discord.MessageEmbed();
 				      embed.setTitle("Ticket: " + message.channel.name)

@@ -13,12 +13,26 @@ module.exports = {
 
 	  if(message.author.bot) return;
 
+		var server = message.guild.id
+		con.connect(function(err) {
+			con.query("SELECT points FROM servers WHERE guild = '"+server+"'", function (err, result, fields) {
+						// console.log(result);
+						if (typeof result == "undefined") { return }
+						if (typeof result[0] == "undefined") { return }
+				if (result) {
+					message.guild.me.setNickname('FiveM.dk | '+result[0]['points']+' points');
+				}
+				else {
+					message.guild.me.setNickname('FiveM.dk');
+				}
+			});
+		});
 
 	  if(message.content.indexOf(config.prefix) !== 0) return;
 	  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	  const command = args.shift().toLowerCase();
 
-		var server = message.guild.id
+
 
 		con.connect(function(err) {
 			    con.query("SELECT * FROM commands", function (err, result, fields) {

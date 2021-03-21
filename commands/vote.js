@@ -66,7 +66,50 @@ module.exports = {
 
 				}
 				else {
-					message.channel.send("Du har ikke defineret en server, ellers findes denne server ikke på vores liste. Tjek listen på https://fivem.dk")
+					con.query("SELECT ip AS server, name FROM servers WHERE guild = '"+message.guild+"'", function (err, fetch, fields) {
+						if (typeof fetch == "undefined") { return message.channel.send("Der skete en fejl.") }
+							if (typeof fetch[0] == "undefined") {
+								return message.channel.send("Der skete en fejl.")
+							}
+							var server = fetch[0]['server'];
+					con.query("SELECT * FROM votes WHERE identifier = '"+identifier+"' AND curdate = CURDATE()", function (err, result, fields) {
+						// console.log(result);
+						if (typeof result !== "undefined") {
+							if (typeof result[0] !== "undefined") {
+								message.channel.send("Du har allerede stemt i dag.")
+							}
+							else {
+								var sql = "INSERT INTO votes (identifier, server, curdate) VALUES ('"+identifier+"', '"+server+"', CURDATE())";
+							  con.query(sql, function (err, result) {
+							    if (err) throw err;
+									message.channel.send("Du har stemt på serveren ``"+fetch[0]['server']+"`` ("+fetch[0]['name']+"), mange tak. - Husk at stem igen i morgen!\nHusk du kan stemme 2 gange hvis du også stemmer inde på https://fivem.dk");
+									// message.channel.send(message.author.id)
+
+										var sql = "UPDATE servers SET points=points+1 WHERE ip='"+server+"'";
+									  con.query(sql, function (err, result) {
+									    if (err) throw err;
+									  });
+							  });
+							}
+
+						}
+						else {
+							var sql = "INSERT INTO votes (identifier, server, curdate) VALUES ('"+identifier+"', '"+server+"', CURDATE())";
+						  con.query(sql, function (err, result) {
+						    if (err) throw err;
+								message.channel.send("Du har stemt på serveren ``"+fetch[0]['server']+"`` ("+fetch[0]['name']+"), mange tak. - Husk at stem igen i morgen!");
+								// message.channel.send(message.author.id)
+
+									var sql = "UPDATE servers SET points=points+1 WHERE ip='"+server+"'";
+								  con.query(sql, function (err, result) {
+								    if (err) throw err;
+								  });
+						  });
+						}
+					});
+				})
+
+					// message.channel.send("Du har ikke defineret en server, ellers findes denne server ikke på vores liste. Tjek listen på https://fivem.dk")
 				}
 			 })
 			.catch(function (error) {

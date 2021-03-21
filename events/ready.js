@@ -5,9 +5,9 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-    client.user.setActivity("FiveM.dk/discord", {
+    client.user.setActivity("fivem.dk", {
       type: 'WATCHING',
-      url: 'https://www.twitch.tv/fivemdk'
+      url: 'https://fivem.dk'
     });
 
     console.log('Botten er startet.' + " Botten er på " + client.guilds.cache.size + " forskellige servere:");

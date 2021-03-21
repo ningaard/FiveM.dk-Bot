@@ -15,8 +15,18 @@ client.on('ready', () => {
 		guild.fetchInvites()
 		.then(invites => guildInvites.set(guild.id, invites))
 		.catch(err => console.log(err));
-		console.log(`${guild.name} - ${guild.memberCount}`)
+		// console.log(`${guild.name} - ${guild.memberCount}`)
 	});
+
+
+	client.guilds.cache.forEach((guild => {
+		if ((guild.channels.cache.find(c => c.name.toLowerCase() === "ghostping"))) {
+			console.log(`${guild.name} bruger ghostping`)
+		}
+	}));
+
+
+
 	test = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)
 	console.log(test)
 });

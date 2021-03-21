@@ -13,6 +13,8 @@ const port = 80
 var path = require('path');
 var events = require('./handlers/events')(client);
 const iplocate = require("node-iplocate");
+const btoa = require('btoa');
+const fetch = require('node-fetch');
 
 // client.on('ready', () => {
 // 	console.log("API kan tage Discord kald")
@@ -79,6 +81,31 @@ app.get('/api/v1', function (req, res) {
   })
 })
 
+
+
+app.get('/api/v2', function (req, res) {
+  con.query('SELECT count(server) as total FROM votes', function (err, result, fields) {
+    con.query('SELECT count(server) as today FROM votes WHERE curdate = CURDATE()', function (err, result2, fields) {
+      con.query('SELECT count( DISTINCT(ip) ) as ips FROM votes', function (err, result3, fields) {
+        con.query('SELECT sum(clients) as clients FROM servers', function (err, result4, fields) {
+          con.query('SELECT sum(max) as max FROM servers', function (err, result5, fields) {
+          result6 = [{'name':'FiveM.dk'}]
+
+          json = [{'total' : result[0]['total']},
+                  {'today' : result2[0]['today']},
+                  {'voters' : result3[0]['ips']},
+                  {'clients' : result4[0]['clients']},
+                  {'max' : result5[0]['max']},
+                  {'name' : 'FiveM.dk'}
+                  ]
+            res.json(json)
+          })
+        })
+      })
+    })
+  })
+})
+
 app.get('/getUser/:identifier', function (req, res) {
   var identifier = req.params.identifier
   axios.defaults.headers.common['Authorization'] = "Bot "+config.token;
@@ -100,9 +127,9 @@ app.get('/vote/:server', function (req, res) {
   ip = ipa.replace("::ffff:", "")
 
 
-  iplocate(ip).then(function(results) {
+  // iplocate(ip).then(function(results) {
 
-    if (results.country === "Denmark") {
+  //   if (results.country === "Denmark") {
 
       con.query(`SELECT * FROM votes WHERE ip = ? AND curdate = CURDATE()`, [ip], function (err, result, fields) {
         if (!result[0]) {
@@ -116,7 +143,20 @@ app.get('/vote/:server', function (req, res) {
           })
         }
       })
-    }
+  //   }
+  // })
+
+
+})
+
+app.get('/setClients/:server/:clients', function (req, res) {
+  var server = req.params.server
+  var clients = req.params.clients
+
+  con.query(`UPDATE servers SET clients=${clients} WHERE ip='${server}'`, function (err, result, fields) {
+
+
+
   })
 
 
@@ -127,13 +167,67 @@ app.get('/defender/single/:identifier', function (req, res) {
   var identifier = req.params.identifier
   checks = ['steam_id', 'xbox_id', 'live_id', 'license_id', 'discord_id'];
   try {
-
 		def.connect(function(err) {
 	    def.query(`SELECT * FROM moddersteam WHERE ${checks[0]} = '${identifier}'
 	    OR ${checks[1]} = '${identifier}'
 	    OR ${checks[2]} = '${identifier}'
 	    OR ${checks[3]} = '${identifier}'
 	    OR ${checks[4]} = '${identifier}'`, function (err, result, fields) {
+	      if (typeof result == "undefined") return res.json({'status': 'not found'})
+	      if (typeof result[0] !== "undefined") {
+	        res.json({ 'status': 'found' })
+	      }
+	      else {
+	        res.json({ 'status': 'not found' })
+	      }
+	    })
+		})
+  } catch (e) {
+    console.log(e)
+  }
+});
+
+
+let bannedModders = ""
+function refreshCache() {
+    def.query("SELECT steam_id, xbox_id, license_id, license2_id, discord_id FROM moddersteam", function (err, result, fields) {
+        bannedModders = result
+    })
+    setTimeout(() => {
+        refreshCache();
+    }, 10*60*1000);
+}
+refreshCache();
+
+
+app.get('/defender/all', function (req, res) {
+    try {
+        res.json(bannedModders)
+    } catch (e) {
+        res.json([])
+    }
+});
+
+
+// app.get('/defender/all', function (req, res) {
+//   try {
+// 		def.connect(function(err) {
+// 	    def.query("SELECT * FROM moddersteam", function (err, result, fields) {
+// 	      res.json(result)
+// 	    })
+// 		})
+//   } catch (e) {
+//     console.log(e)
+//   }
+// });
+
+
+app.get('/defender/ip/:ip', function (req, res) {
+  var ip = req.params.ip
+  try {
+
+		def.connect(function(err) {
+	    def.query(`SELECT * FROM wlip WHERE ip = '${ip}'`, function (err, result, fields) {
 	      if (typeof result == "undefined") return res.json({'status': 'not found'})
 	      if (typeof result[0] !== "undefined") {
 	        // res.json(result)
@@ -148,18 +242,6 @@ app.get('/defender/single/:identifier', function (req, res) {
     console.log(e)
   }
 
-});
-
-app.get('/defender/all', function (req, res) {
-  try {
-		def.connect(function(err) {
-	    def.query("SELECT * FROM moddersteam", function (err, result, fields) {
-	      res.json(result)
-	    })
-		})
-  } catch (e) {
-    console.log(e)
-  }
 });
 
 //
@@ -187,7 +269,7 @@ app.get('/defender/all', function (req, res) {
 
 app.get('/defender/version', function (req, res) {
   try {
-    res.send("1.3")
+    res.send("1.4")
   } catch (e) {
     console.log(e)
   }
@@ -200,27 +282,25 @@ app.post('/webhook/:hook/:message', function (req, res) {
   // client.guilds.get('621288307099303966').channels.get('687445302755721289').send("Message");
 })
 
-app.use(function(req, res, next){
-  res.status(404);
 
-  // respond with html page
-  if (req.accepts('html')) {
-    res.render('404', { url: req.url });
-    return;
-  }
-});
+
+
 
 app.listen(port, () => {
   console.log(`API'en køre på http://fivem.dk:${port}`)
 })
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/chain.pem', 'utf8');
+// const privateKey = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/privkey.pem', 'utf8');
+// const certificate = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/cert.pem', 'utf8');
+// const ca = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/chain.pem', 'utf8');
 
+// const cert = fs.readFileSync('./path/to/the/cert.crt');
+const ca = fs.readFileSync('ca-bundle.txt');
+const key = fs.readFileSync('private-key.txt');
+//
 const credentials = {
-	key: privateKey,
-	cert: certificate,
+	key: key,
+	cert: ca,
 	ca: ca
 };
 
