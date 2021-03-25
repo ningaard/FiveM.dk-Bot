@@ -14,6 +14,11 @@ module.exports = {
 		const cfx = args[0];
 		// console.log(args[0])
 		const name = args.slice(1).join(" ")
+		
+		if(!cfx) {
+		return message.channel.send("Hvad for en server vil du fjerne????")
+		}
+		
 		if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
 
 		  if(message.member.roles.cache.some(r => r.name === "Moderator") || message.member.roles.cache.some(r => r.name === "Manager") ) {
