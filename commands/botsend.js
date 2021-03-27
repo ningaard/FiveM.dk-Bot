@@ -14,7 +14,7 @@ module.exports = {
             let bruger = message.mentions.members.first() || message.guild.members.get(args[0]);
             let besked = args.splice(1).join(" ");
 
-            if(!bruger) return message.channel.send("Kæmpe systembrud du prøver på der").then(msg => (msg.delete({ timeout: 5000 })));
+            if(!bruger) return message.channel.send("Stop at lave systembrud på den der måde").then(msg => (msg.delete({ timeout: 5000 })));
 
             if(!besked) return message.channel.send("Du skal lige huske beskeden du vil sende igås?").then(msg => (msg.delete({ timeout: 5000 })));
 
