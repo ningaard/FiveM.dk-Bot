@@ -3,13 +3,13 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'botsend',
 	description: 'Sender en besked til en bruger',
-	async execute(client, message, args) {
+	async execute(message, args) {
 
-        message.delete();
-    
+
+		message.delete();
         if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
 
-		if(message.member.roles.cache.some(r => r.name === "Moderator") || message.member.roles.cache.some(r => r.name === "Manager") ) { 
+		if(message.member.roles.cache.some(r => r.name === "Moderator") || message.member.roles.cache.some(r => r.name === "Manager") ) {
 
             let bruger = message.mentions.members.first() || message.guild.members.get(args[0]);
             let besked = args.splice(1).join(" ");
@@ -37,6 +37,6 @@ module.exports = {
         }
         else {
             message.channel.send("Du har ikke permission til at rode med det her :)")
-        } 
+        }
     }
 };
