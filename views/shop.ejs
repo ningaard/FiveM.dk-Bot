@@ -101,166 +101,74 @@ $apiData = json_decode(@file_get_contents("https://fivem.dk/functions/api.php"),
 </script>
 
 </section>
-<!-- <center><input type="text" id="searchResource"><input type="submit" onclick="sogResource()" value="Søg" placeholder="Server navn:"></center> -->
-<h3 id="searchResult"></h3>
+
 <section>
-<center>
-<table class="servers" id="servers">
-    <tr>
-        <th>#</th>
-        <th>Navn</th>
-        <th>IP</th>
-        <th>Online</th>
-        <th>Points</th>
-        <!-- <th>Modder inde</th> -->
-        <th>Læs mere</th>
-        <th>Vote</th>
-    </tr>
 
+<style media="screen">
+  .column {
+  float: left;
+  width: 20%;
+  padding: 2%;
+  height: 350px; /* Should be removed. Only for demonstration */
+  border: 0.2em solid white;
+  border-radius: 1%;
+  margin-left: 5%;
+  margin-top: 5%;
+  box-sizing: border-box;
+}
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+.row {
+  width: 80%;
+  margin: auto;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+<div id="shops" style="margin-bottom:460px;">
+<div class="row">
+</div>
+
 
 <script type='text/javascript'>
-  const sendGetRequest = async () => {
-  var row =<%-JSON.stringify(result)%>
+var row =<%-JSON.stringify(result)%>
 
-  servers = document.getElementById('servers')
+servers = document.getElementById('shops')
 
-  row.reverse();
-  for (let i = 0; i < row.length; i++) {
+row.reverse();
 
 
-
-    if (row['port'] == 1) {
-
-      port['port'] == "";
-    }
-
-    try {
-
-      const server = await axios.get('https://servers-frontend.fivem.net/api/servers/single/'+row[i]['ip']);
-
-
-
-          online = await server['data']['Data']['clients'];
-          max = server['data']['Data']['sv_maxclients'];
-
-
-
-          if (max) {
-            max = max;
-          }
-          else {
-            max = "?";
-          }
-
-          gametype = server['data']['Data']['gametype']
-
-          //Logo maker
-          if (typeof server['data']['Data']['iconVersion'] !== 'UNDEFINED') {
-
-            logoVersion = server['data']['Data']['iconVersion'];
-          ip = row[i]['ip'];
-          if (logoVersion) {
-            logo = "https://servers-live.fivem.net/servers/icon/"+ip+"/"+logoVersion+".png";
-          }
-          else {
-            logo = "https://i.imgur.com/Hk8dQhI.png";
-          }
-        }
-
-          // if (isset($row['logo'])) {
-
-
-          // fetch(`setClients/${row[i]['ip']}/${online}`)
-          // .then((resp) => resp.json())
-          // .then(function(data) {
-          //
-          // })
-          // .catch(function() {
-          //
-          // });
-
-          if (server['data']['Data']['resources'].includes("kaz_garage")) {
-            console.log("FANDT EN SKY SERVER: " + row[i]['name'])
-          }
-
-
-          // if (!row[i]['max'] == 0) {
-            servers.innerHTML += `
-            <tr><td><img style='width: 35%;' src='${logo}'></td>
-            <td>${row[i]["name"]}</td>
-            <td>cfx.re/join/${row[i]["ip"]}</td>
-            <td>${online} / ${max}</td>
-            <td>${row[i]['points']}</td>
-            <td><a href='server/${row[i]['ip']}'>Læs mere</a></td>
-            <td><a class='vote' href='#' onclick=vote('${row[i]['ip']}')>+1</a></td>
-            </tr>
-            `
-          // }
-
-      // })
-  } catch (err) {
-     // Handle Error Here
-     logo = "https://i.imgur.com/91hRv9p.png";
-     online = "ukendt";
-     max = "ukendt";
-     bg = "#632121";
-     ip = `cfx.re/join/${row[i]["ip"]}`;
-     link = `<a href='server/${row[i]['ip']}'>Læs mere</a>`;
-
-     console.log(row[i]['name'])
-     if (row[i]['name'] == 'NoLifeRP') {
-       logo = row[i]['logo']
-       online = row[i]["clients"]
-       max = row[i]["max"]
-       bg = "#;";
-       ip = "NoLifeRP Launcher"
-       link = `<a href='https://discord.gg/wQ5JSWR'>Join Discord</a>`;
-     }
-     if (row[i]['name'] == 'DanishRP') {
-       logo = row[i]['logo']
-       online = row[i]["clients"]
-       max = row[i]["max"]
-       bg = "#;";
-       ip = "DanishRP Discord"
-       link = `<a href='https://discord.gg/danishrp'>Join Discord</a>`;
-     }
-
-     servers.innerHTML += `
-     <tr style="background-color:${bg}"><td><img style='width: 35%;' src='${logo}'></td>
-     <td>${row[i]["name"]}</td>
-     <td>${ip}</td>
-     <td>${online} / ${max}</td>
-     <td>${row[i]['points']}</td>
-     <td>${link}</td>
-     <td><a class='vote' href='#' onclick=vote('${row[i]['ip']}')>+1</a></td>
-     </tr>
-     `
-
- }
-};
-
-
-
+  for (var i = 0; i < row.length; i++) {
+    servers.innerHTML += `
+      <div class="column">
+        <h2>${row[i]['name']}</h2>
+          <h3>Sælger: ${row[i]['seller']}</h2>
+            <h3>Pris: ${row[i]['price']} DKK</h2>
+        <a href="https://discord.gg/6TQW6Jv" target="_blank" button="" type="discord" class="dbutton">Se showcase</a>
+        <a href="https://discord.gg/6TQW6Jv" target="_blank" button="" type="discord" class="dbutton">Kontakt sælger</a>
+      </div>
+      `
   }
-sendGetRequest()
+
+
+
+
+
+
 
 </script>
 
-<!-- <script>
-  fetch('https://fivem.dk/functions/getClients.php')
-  .then((resp) => resp.json())
-  .then(function(data) {
 
-  })
-  .catch(function() {
+</div>
 
-  });
 
-</script> -->
-</table>
-</center>
+
+
+</div>
 
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>

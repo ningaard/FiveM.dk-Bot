@@ -8,6 +8,7 @@ const client = new Discord.Client();
 const express = require('express')
 const fs = require('fs')
 const https = require('https')
+const http = require('http')
 const app = express()
 const port = 80
 var path = require('path');
@@ -26,7 +27,56 @@ app.use(express.static(__dirname + '/partials'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// app.use(function(request, response, next) {
+//
+//     if (process.env.NODE_ENV != 'development' && !request.secure) {
+//        return response.redirect("https://" + request.headers.host + request.url);
+//     }
+//
+//     next();
+// })
+
 app.get('/', function (req, res) {
+
+  // const nolife = axios.get('https://brosboel-275elr.users.cfx.re/dynamic.json');
+  // online = nolife['data']['Data']['clients'];
+  // max = nolife['data']['Data']['sv_maxclients'];
+  // con.query(`UPDATE servers SET clients=${clients}, max=${max} WHERE name='NoLifeRP'`, function (err, result, fields) {
+  //
+  //
+  //
+  // })
+
+  axios.get(`https://brosboel-275elr.users.cfx.re/dynamic.json`)
+  .then(function (nolife) {
+    online = nolife['data']['clients'];
+    max = nolife['data']['sv_maxclients'];
+    con.query(`UPDATE servers SET clients=${online}, max=${max} WHERE name='NoLifeRP'`, function (err, result, fields) {
+
+      axios.get(`https://danishrp.dk/status`)
+      .then(function (nolife) {
+        online = nolife['data']['clients'];
+        max = nolife['data']['maxClients'];
+        con.query(`UPDATE servers SET clients=${online}, max=${max} WHERE name='DanishRP'`, function (err, result, fields) {
+
+
+
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {
+      });
+
+    })
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+  });
+
   con.query("SELECT * FROM servers WHERE active = 1 ORDER BY points ASC", function (err, result, fields) {
     res.render('index', {title: 'title', result: result});
   })
@@ -42,6 +92,19 @@ app.get('/server/:server', function (req, res) {
 app.get('/docs', function (req, res) {
   var server = req.params.server
   res.render('docs', {title: 'title'});
+});
+
+app.get('/shop', function (req, res) {
+  con.query("SELECT * FROM shop", function (err, result, fields) {
+    res.render('shop', {title: 'title', result: result});
+  })
+});
+
+app.get('/shop/:name', function (req, res) {
+  var shop = req.params.server
+  con.query("SELECT * FROM shop WHERE name = ?", [shop], function (err, result, fields) {
+    res.render('shops', {title: 'title', result: result});
+  })
 });
 
 app.get('/discord', function(req, res) {
@@ -284,28 +347,43 @@ app.post('/webhook/:hook/:message', function (req, res) {
 
 
 
+app.get('/.well-known/acme-challenge/eQewD_1uwrHZda3vqqoDE3vfjYhxrdlhFXrpG5xkIJI', function (req, res) {
+  try {
+    res.send("eQewD_1uwrHZda3vqqoDE3vfjYhxrdlhFXrpG5xkIJI.52NmwfckutoInMF1FdB1HlMH2Gs-s48c1Op4N7fh9Qo")
+  } catch (e) {
+    console.log(e)
+  }
+});
 
+// app.listen(port, () => {
+//   console.log(`API'en køre på http://fivem.dk:${port}`)
+// })
 
-app.listen(port, () => {
-  console.log(`API'en køre på http://fivem.dk:${port}`)
-})
+const privateKey = fs.readFileSync('cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('cert/cert.pem', 'utf8');
+const ca = fs.readFileSync('cert/chain.pem', 'utf8');
 
-// const privateKey = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/privkey.pem', 'utf8');
-// const certificate = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/cert.pem', 'utf8');
-// const ca = fs.readFileSync('/etc/letsencrypt/live/fivem.dk/chain.pem', 'utf8');
-
-// const cert = fs.readFileSync('./path/to/the/cert.crt');
-const ca = fs.readFileSync('ca-bundle.txt');
-const key = fs.readFileSync('private-key.txt');
-//
 const credentials = {
-	key: key,
-	cert: ca,
+	key: privateKey,
+	cert: certificate,
 	ca: ca
 };
 
+// var options = {
+//   key: fs.readFileSync('ssl/key.pem'),
+//   cert: fs.readFileSync('ssl/certificate.pem')
+// };
+// const httpsServer = https.createServer(options, app);
+
+// const httpsServer = https.createServer(credentials, app);
+
+const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
+httpServer.listen(80, () => {
+	console.log('HTTP Server running on port 80');
+});
+
 httpsServer.listen(443, () => {
-	console.log('HTTPS serveren er startet.');
+	console.log('HTTPS Server running on port 443');
 });
