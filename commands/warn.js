@@ -6,7 +6,7 @@ function makeid(length) {
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
-        result.push(characters.charAt(Math.floor(Math.random() * 
+        result.push(characters.charAt(Math.floor(Math.random() *
         charactersLength)));
     }
    return result.join('');
@@ -15,8 +15,8 @@ function makeid(length) {
 module.exports = {
 	name: 'warn',
 	description: 'Warner en person',
-	async execute(member, message, args) {
-    
+	async execute(message, args, member) {
+
         let id = makeid(9)
 
         function viewwarns(brugerid, message){
@@ -48,7 +48,7 @@ module.exports = {
                 if (err) throw err;
                     con.query(`SELECT * FROM warns WHERE userid = ?`, [brugerid], (err1, row1) => {
                         if (err1) throw err;
-                            con.query(`INSERT INTO warns (userid, reason, author, authorid, nr) VALUES (?,?,?,?,?)`, 
+                            con.query(`INSERT INTO warns (userid, reason, author, authorid, nr) VALUES (?,?,?,?,?)`,
                             [brugerid, reason, warner, warnerid, id])
                     });
             });
@@ -69,10 +69,10 @@ module.exports = {
                 } else {
                     message.channel.send(`Nummeret ${nr} findes ikke.`);
                 }
-            });            
+            });
         }
 
-        if (message.guild.id !== "661361742282096650") return;
+        if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
         //if(!message.bruger.roles.cache.some(r => r.name === "Moderator") || !message.bruger.roles.cache.some(r => r.name === "Manager") ) return;
         const warner = message.author.username;
         const warnerid = message.author.id;
