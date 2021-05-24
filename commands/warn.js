@@ -65,7 +65,10 @@ module.exports = {
                     .setDescription(`**Du har fået fjernet følgende warning!**\n${row[0].reason}\n\n**Din warning blev fjernet af:** ${message.author.username}\n\n**Warn ID:** ${row[0].nr}`)
                     .setFooter(`Lavet af Ezague#0020`)
                     let warnmedlem = row[0].userid;
-                    member.users.fetch(warnmedlem).then(user => user.send(remembed))
+                    console.log(warnmedlem)
+                    message.guild.members.fetch(warnmedlem, false).then((user) => {
+                       user.send(remembed);
+                      });
                 } else {
                     message.channel.send(`Nummeret ${nr} findes ikke.`);
                 }
