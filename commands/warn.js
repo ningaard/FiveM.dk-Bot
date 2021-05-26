@@ -76,7 +76,7 @@ module.exports = {
         }
 
         if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
-        //if(!message.bruger.roles.cache.some(r => r.name === "Moderator") || !message.bruger.roles.cache.some(r => r.name === "Manager") ) return;
+        if(!message.bruger.roles.cache.some(r => r.name === "Moderator") || !message.bruger.roles.cache.some(r => r.name === "Manager") || !message.bruger.roles.cache.some(r => r.name === "Trainee") ) return;
         const warner = message.author.username;
         const warnerid = message.author.id;
         const bruger = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
