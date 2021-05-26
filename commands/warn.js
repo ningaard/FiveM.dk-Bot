@@ -63,8 +63,8 @@ module.exports = {
                     .setColor('#00ff00')
                     .setTitle(`Warning fjernet | ${message.guild.name}`)
                     .setDescription(`**Du har fået fjernet følgende warning!**\n${row[0].reason}\n\n**Din warning blev fjernet af:** ${message.author.username}\n\n**Warn ID:** ${row[0].nr}`)
-                    .setFooter(`Lavet af Ezague#0020`)
-                    let warnmedlem = row[0].userid;
+                    .setFooter(`Advarselssystem af Ezague#0020 | FiveM.dk | Bragt til live af Lasse Mejdahl Christensen | lassemc.dk`)
+                    let warnmedlem = '' + row[0].userid + '';
                     console.log(warnmedlem)
                     message.guild.members.fetch(warnmedlem, false).then((user) => {
                        user.send(remembed);
@@ -75,8 +75,9 @@ module.exports = {
             });
         }
 
+
         if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
-        if(!message.bruger.roles.cache.some(r => r.name === "Moderator") || !message.bruger.roles.cache.some(r => r.name === "Manager") || !message.bruger.roles.cache.some(r => r.name === "Trainee") ) return;
+        if(!message.member.roles.cache.some(r => r.name === "Moderator") || !message.member.roles.cache.some(r => r.name === "Manager") || !message.member.roles.cache.some(r => r.name === "Trainee") ) return message.channel.send("Du har ikke adgang til det her");
         const warner = message.author.username;
         const warnerid = message.author.id;
         const bruger = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -97,7 +98,7 @@ module.exports = {
                 .setColor('#ff0000')
                 .setTitle(`Warning | ${message.guild.name}`)
                 .setDescription(`**Du har fået en advarsel med følgende grundlag:**\n${reason}\n\n**Du blev warned af:** ${warner}\n**Warn ID:** ${id}`)
-                .setFooter(`Lavet af Ezague#0020`)
+                .setFooter(`Advarselssystem af Ezague#0020 | FiveM.dk | Bragt til live af Lasse Mejdahl Christensen | lassemc.dk`)
                 bruger.send(embed);
                 break;
             case "fjern":
