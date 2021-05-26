@@ -77,7 +77,7 @@ module.exports = {
 
 
         if (!message.guild.id == "661361742282096650") return message.channel.send("Det må du ikke det der")
-        if(!message.member.roles.cache.some(r => r.name === "Moderator") || !message.member.roles.cache.some(r => r.name === "Manager") || !message.member.roles.cache.some(r => r.name === "Trainee") ) return message.channel.send("Du har ikke adgang til det her");
+        if(!message.member.roles.cache.some(r => r.name === "Moderator") && !message.member.roles.cache.some(r => r.name === "Manager") && !message.member.roles.cache.some(r => r.name === "Trainee") ) return message.channel.send("Du har ikke adgang til det her");
         const warner = message.author.username;
         const warnerid = message.author.id;
         const bruger = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
