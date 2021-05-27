@@ -184,6 +184,21 @@ app.get('/getUser/:identifier', function (req, res) {
 
 })
 
+app.get('/getGuild/:identifier', function (req, res) {
+  var identifier = req.params.identifier
+  axios.defaults.headers.common['Authorization'] = "Bot "+config.token;
+  axios.get(`https://discordapp.com/api/guilds/${identifier}`)
+  .then(function (response) {
+    res.json(response['data'])
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+  });
+
+})
+
 app.get('/vote/:server', function (req, res) {
   var server = req.params.server
   ipa = req.connection.remoteAddress

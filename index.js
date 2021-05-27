@@ -6,6 +6,7 @@ var api = require('./api');
 const client = new Discord.Client();
 const config = require("./config.json");
 var events = require('./handlers/events')(client);
+const disbut = require('discord-buttons')(client);
 
 const guildInvites = new Map();
 
@@ -32,13 +33,21 @@ client.on('ready', () => {
 });
 
 
-client.on("message", async message => {
-	client.events.get('message').execute(message)
-	client.events.get('log').execute(message)
-})
+// client.on("message", async message => {
+// 	client.events.get('message').execute(message)
+// 	client.events.get('log').execute(message)
+// })
+
+client.on('message', (message, member) => {
+	client.events.get('message').execute(message, client)
+	client.events.get('log').execute(message, member)});
 
 client.on('messageReactionAdd', (reaction, user) => {
 	client.events.get('createTicket').execute(reaction, user)
+});
+
+client.on('clickButton', async (button) => {
+  client.events.get('buttons').execute(button, disbut)
 });
 
 // client.on('guildMemberAdd', member => {

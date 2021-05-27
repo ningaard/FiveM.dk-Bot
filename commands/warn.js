@@ -59,6 +59,8 @@ module.exports = {
                 if (err) throw err;
                 if(row[0]) {
                     con.query(`DELETE FROM warns WHERE nr = ?`, [nr])
+                    status = "Advarsel blev fjernet"
+                    log(status, row[0].userid, row[0].reason, message.author.username, row[0].nr)
                     let remembed = new Discord.MessageEmbed()
                     .setColor('#00ff00')
                     .setTitle(`Warning fjernet | ${message.guild.name}`)
@@ -73,6 +75,21 @@ module.exports = {
                     message.channel.send(`Nummeret ${nr} findes ikke.`);
                 }
             });
+        }
+
+        function log(status, userid, reason, author, nr) {
+          const logChannel = message.guild.channels.cache.find(channel => channel.name === "warns")
+  				if (logChannel) {
+  					const embed = new Discord.MessageEmbed();
+  					embed.setTitle(status)
+  					embed.addField("Bruger", "<@"+userid+">", true)
+  					embed.addField("Grund", reason, true)
+  					embed.addField("Tildelt af", author, true)
+  					embed.addField("Nr", nr, true)
+  					embed.setFooter('FiveM.dk - Bragt til live af Lasse Mejdahl Christensen');
+  					logChannel.send({embed});
+  				}
+  			
         }
 
 
@@ -94,6 +111,8 @@ module.exports = {
                 const reason = args.splice(2).join(" ");
                 if (!reason) return;
                 givewarn(brugerid, warner, reason)
+                status = "Advarsel givet"
+                log(status, brugerid, reason, warner, id)
                 let embed = new Discord.MessageEmbed()
                 .setColor('#ff0000')
                 .setTitle(`Warning | ${message.guild.name}`)
