@@ -41,6 +41,28 @@ client.on('ready', () => {
 client.on('message', (message, member) => {
 	client.events.get('message').execute(message, client)
 	client.events.get('log').execute(message, member)});
+	if(message.content==('!d bump') || (message.content==('!d bump '))){
+		const channel = message.guild.channels.cache.find(c  => c.name === "bump")
+
+		let embed  = new Discord.MessageEmbed()
+			.setTitle(`Bump!`)
+			.setDescription(`${message.author}, \nTak for dit bump!\nJeg vil sende en besked, når serveren kan bumpes igen.`)
+			.setColor('00FF00')
+			.setTimestamp()
+
+		let embed2  = new Discord.MessageEmbed()
+		  .setTitle(`Bump!`)
+		  .setDescription(`Der kan nu bumpes igen, ved at skrive !d bump . `)
+		  .setColor('00FF00')
+		  .setTimestamp()
+
+		  channel.send(embed)
+
+		setTimeout(function(){
+		  channel.send(embed2)
+	  }, 120*60*1000)
+
+	};
 
 client.on('messageReactionAdd', (reaction, user) => {
 	client.events.get('createTicket').execute(reaction, user)
